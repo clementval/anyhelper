@@ -1,14 +1,24 @@
 #!/bin/bash
 
 VPN_EXEC="/opt/cisco/anyconnect/bin/vpn"
-HOST="sslvpn.ethz.ch"
+VPN_PREF="$HOME/.anyconnect"
+VPN_PASS="$HOME/.anyconnect_pass"
+
+# Read user name from AnyConnect preferences
+HOST=$(cat $VPN_PREF | grep DefaultHostName)
+HOST=${HOST/<DefaultHostName>/}
+HOST=${HOST/<\/DefaultHostName>}
+USERNAME=$(cat $VPN_PREF | grep DefaultUser)
+USERNAME=${USERNAME/<DefaultUser>/}
+USERNAME=${USERNAME/<\/DefaultUser>/}
+PASSWORD=$(cat $HOME/.anyconnect_pass)
 
 OPTIND=1 
 
-while getopts "cdsh" opt; do
+while getopts "cdshp:" opt; do
   case "$opt" in
   c)
-    $VPN_EXEC connect $HOST
+    printf "$USERNAME\n$PASSWORD\ny" | $VPN_EXEC -s connect $HOST
     exit 0
     ;;
   d) 
@@ -23,6 +33,8 @@ while getopts "cdsh" opt; do
     $VPN_EXEC hosts
     exit 0
     ;;
+  p) 
+    echo $OPTARG > $VPN_PASS
   esac
 done
 
