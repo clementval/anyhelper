@@ -1,0 +1,23 @@
+#!/bin/bash
+
+VPN_EXEC="/opt/cisco/anyconnect/bin/vpn"
+
+OPTIND=1 
+
+while getopts "cds" opt; do
+    case "$opt" in
+    c)
+        echo 'CONNECT'
+        exit 0
+        ;;
+    d) 
+        $VPN_EXEC disconnect
+        exit 0 
+        ;;
+    s) 
+        $VPN_EXEC status
+        exit 0
+        ;;
+    esac
+done
+
