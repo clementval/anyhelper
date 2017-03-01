@@ -1,5 +1,14 @@
 #!/bin/bash
 
+function print_red {
+  echo -e "\033[91m$1\033[0m"
+}
+
+function print_green {
+  echo -e "\033[32m$1\033[0m"
+}
+
+
 VPN_EXEC="/opt/cisco/anyconnect/bin/vpn"
 VPN_PREF="$HOME/.anyconnect"
 VPN_PASS="$HOME/.anyconnect_pass"
@@ -18,11 +27,21 @@ OPTIND=1
 while getopts "cdshp:" opt; do
   case "$opt" in
   c)
-    printf "$USERNAME\n$PASSWORD\ny" | $VPN_EXEC -s connect $HOST
+    printf "$USERNAME\n$PASSWORD\ny" | $VPN_EXEC -s connect $HOST > /dev/null
+    if [ $? -ne 0 ]; then
+      print_red "[VPN: ERROR CONNECTING]"
+    else
+      print_green "[VPN: CONNECTED]"
+    fi
     exit 0
     ;;
   d) 
-    $VPN_EXEC disconnect
+    $VPN_EXEC disconnect > /dev/null
+    if [ $? -ne 0 ]; then
+      print_red "[VPN: ERROR DISCONNECTING]"
+    else
+      print_green "[VPN: DISCONNECTED]"
+    fi
     exit 0 
     ;;
   s) 
