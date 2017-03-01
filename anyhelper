@@ -1,23 +1,28 @@
 #!/bin/bash
 
 VPN_EXEC="/opt/cisco/anyconnect/bin/vpn"
+HOST="sslvpn.ethz.ch"
 
 OPTIND=1 
 
-while getopts "cds" opt; do
-    case "$opt" in
-    c)
-        echo 'CONNECT'
-        exit 0
-        ;;
-    d) 
-        $VPN_EXEC disconnect
-        exit 0 
-        ;;
-    s) 
-        $VPN_EXEC status
-        exit 0
-        ;;
-    esac
+while getopts "cdsh" opt; do
+  case "$opt" in
+  c)
+    $VPN_EXEC connect $HOST
+    exit 0
+    ;;
+  d) 
+    $VPN_EXEC disconnect
+    exit 0 
+    ;;
+  s) 
+    $VPN_EXEC status
+    exit 0
+    ;;
+  h) 
+    $VPN_EXEC hosts
+    exit 0
+    ;;
+  esac
 done
 
