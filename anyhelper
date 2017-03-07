@@ -28,7 +28,8 @@ while getopts "cdshp:" opt; do
   case "$opt" in
   c)
     printf "$USERNAME\n$PASSWORD\ny" | $VPN_EXEC -s connect $HOST > /dev/null
-    if [ $? -ne 0 ]; then
+    if [ $? -ne 0 ]
+    then
       print_red "[VPN: ERROR CONNECTING]"
     else
       print_green "[VPN: CONNECTED]"
@@ -37,7 +38,8 @@ while getopts "cdshp:" opt; do
     ;;
   d) 
     $VPN_EXEC disconnect > /dev/null
-    if [ $? -ne 0 ]; then
+    if [ $? -ne 0 ]
+    then
       print_red "[VPN: ERROR DISCONNECTING]"
     else
       print_green "[VPN: DISCONNECTED]"
