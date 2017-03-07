@@ -45,7 +45,13 @@ while getopts "cdshp:" opt; do
     exit 0 
     ;;
   s) 
-    $VPN_EXEC status
+    RES=$($VPN_EXEC status | grep Connected | wc -l)
+    if [ $RES -ne 0 ]
+    then 
+      print_green "[VPN: CONNECTED]"
+    else
+      print_red "[VPN: DISCONNECTED]"
+    fi
     exit 0
     ;;
   h) 
