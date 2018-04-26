@@ -17,6 +17,9 @@ VPN_PASS="$HOME/.anyconnect_pass"
 HOST=$(cat $VPN_PREF | grep DefaultHostName)
 HOST=${HOST/<DefaultHostName>/}
 HOST=${HOST/<\/DefaultHostName>}
+GROUP=$(cat $VPN_PREF | grep DefaultGroup)
+GROUP=${GROUP/<DefaultGroup>/}
+GROUP=${GROUP/<\/DefaultGroup>}
 USERNAME=$(cat $VPN_PREF | grep DefaultUser)
 USERNAME=${USERNAME/<DefaultUser>/}
 USERNAME=${USERNAME/<\/DefaultUser>/}
@@ -27,7 +30,7 @@ OPTIND=1
 while getopts "cdshp:" opt; do
   case "$opt" in
   c)
-    printf "$USERNAME\n$PASSWORD\ny" | $VPN_EXEC -s connect $HOST > /dev/null
+    printf "$GROUP\n$USERNAME\n$PASSWORD\ny" | $VPN_EXEC -s connect $HOST > /dev/null
     if [ $? -ne 0 ]
     then
       print_red "[VPN: ERROR CONNECTING]"
